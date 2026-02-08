@@ -1,0 +1,25 @@
+### LOCALHOST
+GET http://localhost:8080/assignments
+
+POST http://localhost:8080/assignments
+Content-Type: application/json
+
+{
+    "title": "Math Homework",
+    "class": "Math 101",
+    "dueDate": "2024-12-01T23:59:00Z",
+    "completed": false
+}
+
+### RENDER
+GET http://render.com/assignments
+
+POST http://render.com/assignments
+Content-Type: application/json
+
+{
+    "title": "Science Project",
+    "class": "Biology",
+    "dueDate": "2024-12-01T23:59:00Z",
+    "completed": false
+}

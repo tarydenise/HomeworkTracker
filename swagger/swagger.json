@@ -1,0 +1,19 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Homework Tracker API",
+        "version": "1.0.0",
+        "description": "API for tracking homework assignments"
+    },
+    "paths": {
+        "/assignments": {
+            "get": { "description": "Get all assignments" },
+            "post": { "description": "Create a new assignment" }
+        },
+        "/assignments/{id}": {
+            "get": { "description": "Get an assignment by ID" },
+            "put": { "description": "Update an assignment by ID" },
+            "delete": { "description": "Delete an assignment by ID" }
+        }
+    }
+}
