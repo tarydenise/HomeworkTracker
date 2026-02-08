@@ -12,9 +12,9 @@ Content-Type: application/json
 }
 
 ### RENDER
-GET http://render.com/assignments
+GET https://homeworktracker-fqmq.onrender.com/assignments
 
-POST http://render.com/assignments
+POST https://homeworktracker-fqmq.onrender.com/assignments
 Content-Type: application/json
 
 {
