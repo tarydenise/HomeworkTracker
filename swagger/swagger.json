@@ -1,19 +1,127 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-        "title": "Homework Tracker API",
-        "version": "1.0.0",
-        "description": "API for tracking homework assignments"
-    },
-    "paths": {
-        "/assignments": {
-            "get": { "description": "Get all assignments" },
-            "post": { "description": "Create a new assignment" }
-        },
-        "/assignments/{id}": {
-            "get": { "description": "Get an assignment by ID" },
-            "put": { "description": "Update an assignment by ID" },
-            "delete": { "description": "Delete an assignment by ID" }
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Homework Tracker API",
+    "version": "1.0.0",
+    "description": "API documentation for the Homework Tracker project."
+  },
+  "paths": {
+    "/assignments": {
+      "get": {
+        "summary": "Get all assignments",
+        "description": "Returns a list of all homework assignments.",
+        "responses": {
+          "200": {
+            "description": "A list of assignments."
+          }
         }
+      },
+      "post": {
+        "summary": "Create a new assignment",
+        "description": "Adds a new homework assignment to the database.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "class": { "type": "string" },
+                  "dueDate": { "type": "string" },
+                  "completed": { "type": "boolean" }
+                },
+                "example": {
+                  "title": "Math worksheet",
+                  "class": "Algebra II",
+                  "dueDate": "2026-02-10",
+                  "completed": false
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Assignment created successfully."
+          }
+        }
+      }
+    },
+
+    "/assignments/{id}": {
+      "get": {
+        "summary": "Get assignment by ID",
+        "description": "Returns a single assignment based on its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Assignment found." },
+          "404": { "description": "Assignment not found." }
+        }
+      },
+
+      "put": {
+        "summary": "Update an assignment",
+        "description": "Updates an existing homework assignment.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "class": { "type": "string" },
+                  "dueDate": { "type": "string" },
+                  "completed": { "type": "boolean" }
+                },
+                "example": {
+                  "title": "Updated worksheet",
+                  "class": "Algebra II",
+                  "dueDate": "2026-02-15",
+                  "completed": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Assignment updated successfully." },
+          "404": { "description": "Assignment not found." }
+        }
+      },
+
+      "delete": {
+        "summary": "Delete an assignment",
+        "description": "Deletes a homework assignment by ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Assignment deleted successfully." },
+          "404": { "description": "Assignment not found." }
+        }
+      }
     }
+  }
 }
