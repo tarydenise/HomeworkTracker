@@ -1,19 +1,79 @@
 ### LOCALHOST
 GET http://localhost:8080/assignments
 
+###
+GET http://localhost:8080/assignments/699134770405f7498eb91be8
+
+###
 POST http://localhost:8080/assignments
 Content-Type: application/json
 
 {
-    "title": "Math Homework",
-    "class": "Math 101",
+    "title": "Music",
+    "class": "Music 101",
     "dueDate": "2024-12-01T23:59:00Z",
     "completed": false
 }
 
+###
+PUT http://localhost:8080/assignments/699134770405f7498eb91be8
+Content-Type: application/json
+
+{
+  "title": "Updated Music",
+  "class": "Music 101",
+  "dueDate": "2026-02-15",
+  "completed": true
+}
+
+###
+DELETE http://localhost:8080/assignments/699134b20405f7498eb91be9
+
+### Testing - Missing Title
+POST http://localhost:8080/assignments
+Content-Type: application/json
+
+{
+  "class": "Biology",
+  "dueDate": "2026-02-10",
+  "completed": false
+}
+
+### Testing - completed is not a boolean
+POST http://localhost:8080/assignments
+Content-Type: application/json
+
+{
+  "title": "Lab report",
+  "class": "Biology",
+  "dueDate": "2026-02-10",
+  "completed": "yes"
+}
+
+### Testing - Invalid ID for GET
+GET http://localhost:8080/assignments/123
+
+### Testing - Invalid ID for PUT
+PUT http://localhost:8080/assignments/123
+Content-Type: application/json
+
+{
+  "title": "Bad ID test",
+  "class": "Math",
+  "dueDate": "2026-02-10",
+  "completed": false
+}
+
+### Testing - Invalid ID for DELETE
+DELETE http://localhost:8080/assignments/123
+
+### Testing - 404 Not Found
+DELETE http://localhost:8080/assignments/67a8c3f9e4b12345abcd1111
+
 ### RENDER
 GET https://homeworktracker-fqmq.onrender.com/assignments
 
+###
 POST https://homeworktracker-fqmq.onrender.com/assignments
 Content-Type: application/json
 
@@ -23,3 +83,17 @@ Content-Type: application/json
     "dueDate": "2024-12-01T23:59:00Z",
     "completed": false
 }
+
+###
+PUT https://homeworktracker-fqmq.onrender.com/assignments/67a8c3f9e4b12345abcd6789
+Content-Type: application/json
+
+{
+  "title": "Updated worksheet",
+  "class": "Algebra II",
+  "dueDate": "2026-02-15",
+  "completed": true
+}
+
+###
+DELETE https://homeworktracker-fqmq.onrender.com/assignments/67a8c3f9e4b12345abcd6789

@@ -101,8 +101,10 @@
           }
         },
         "responses": {
-          "200": { "description": "Assignment updated successfully." },
-          "404": { "description": "Assignment not found." }
+          "204": { "description": "Assignment updated successfully." },
+          "400": { "description": "Validation error." },
+          "404": { "description": "Assignment not found." },
+          "500": { "description": "Server error." }
         }
       },
 
@@ -119,7 +121,8 @@
         ],
         "responses": {
           "200": { "description": "Assignment deleted successfully." },
-          "404": { "description": "Assignment not found." }
+          "404": { "description": "Assignment not found." },
+          "500": { "description": "Server error." }
         }
       }
     }
