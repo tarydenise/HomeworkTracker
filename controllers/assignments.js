@@ -26,9 +26,6 @@ async function getAssignmentById(req, res) {
 
 async function createAssignment(req, res) {
   try {
-    const error = validateAssignment(req.body);
-    if (error) return res.status(400).json({ error });
-
     const result = await getDB().collection('assignments').insertOne(req.body);
 
     res.status(201).json({ id: result.insertedId });
@@ -48,8 +45,6 @@ async function updateAssignment(req, res) {
         if (result.matchedCount === 0) {
             return res.status(404).json({ error: 'Assignment not found' });
         }
-        const error = validateAssignment(req.body);
-        if (error) return res.status(400).json({ error });
 
         res.status(204).send();
     } catch (error) {
@@ -69,15 +64,6 @@ async function deleteAssignment(req, res) {
     } catch (error) {
         res.status(500).json({ error: 'An error occurred while deleting the assignment' });
     }
-}
-
-function validateAssignment(data) {
-  if (!data.title || typeof data.title !== "string") return "Title is required";
-  if (!data.class || typeof data.class !== "string") return "Class is required";
-  if (!data.dueDate || typeof data.dueDate !== "string") return "Due date is required";
-  if (typeof data.completed !== "boolean") return "Completed must be true or false";
-
-  return null;
 }
 
 module.exports = {
