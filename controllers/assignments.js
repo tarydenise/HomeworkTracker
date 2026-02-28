@@ -2,17 +2,29 @@ const { getDB } = require('../db/connect');
 const { ObjectId } = require('mongodb');
 
 async function getAllAssignments(req, res) {
-    const assignments = await getDB().collection('assignments').find().toArray();
-    res.json(assignments);
+  try {
+    const db = getDB();
+    const assignments = db.collection('assignments');
+
+    const results = await assignments
+      .find({ userId: new ObjectId(req.user._id) })
+      .toArray();
+
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ error: "Server error retrieving assignments" });
+  }
 }
 
 async function getAssignmentById(req, res) {
   try {
-    const id = req.params.id;
+    const db = getDB();
+    const assignments = db.collection('assignments');
 
-    const assignment = await getDB()
-      .collection('assignments')
-      .findOne({ _id: new ObjectId(id) });
+    const assignment = await assignments.findOne({
+      _id: new ObjectId(req.params.id),
+      userId: new ObjectId(req.user._id)
+    });
 
     if (!assignment) {
       return res.status(404).json({ error: "Assignment not found" });
@@ -26,7 +38,18 @@ async function getAssignmentById(req, res) {
 
 async function createAssignment(req, res) {
   try {
-    const result = await getDB().collection('assignments').insertOne(req.body);
+    const db = getDB();
+    const assignments = db.collection('assignments');
+
+    const assignment = {
+      title: req.body.title,
+      dueDate: req.body.dueDate,
+      class: req.body.class,
+      completed: req.body.completed || false,
+      userId: new ObjectId(req.user._id)
+    }
+
+    const result = await assignments.insertOne(assignment);
 
     res.status(201).json({ id: result.insertedId });
   } catch (err) {
@@ -35,35 +58,48 @@ async function createAssignment(req, res) {
 }
 
 async function updateAssignment(req, res) {
-    try {
-        const id = req.params.id;
-        const updatedAssignment = req.body;
-        const result = await getDB().collection('assignments').updateOne(
-            { _id: new ObjectId(id) },
-            { $set: updatedAssignment }
-        );
-        if (result.matchedCount === 0) {
-            return res.status(404).json({ error: 'Assignment not found' });
-        }
+  try {
+    const db = getDB();
+    const assignments = db.collection('assignments');
 
-        res.status(204).send();
-    } catch (error) {
-        res.status(500).json({ error: 'An error occurred while updating the assignment' });
+    const result = await assignments.updateOne(
+      { _id: new ObjectId(req.params.id), 
+        userId: new ObjectId(req.user._id) },
+      { $set: { 
+        title: req.body.title, 
+        dueDate: req.body.dueDate, 
+        class: req.body.class, 
+        completed: req.body.completed } }
+    );
+      
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'Assignment not found' });
     }
+
+    res.status(200).json({ message: "Assignment updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while updating the assignment' });
+  }
 }
 
 async function deleteAssignment(req, res) {
-    try {
-        const id = req.params.id;
-        const result = await getDB().collection('assignments').deleteOne({ _id: new ObjectId(id) });
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ error: 'Assignment not found' });
-        }
+  try {
+    const db = getDB();
+    const assignments = db.collection('assignments');
 
-        res.status(204).send();
-    } catch (error) {
-        res.status(500).json({ error: 'An error occurred while deleting the assignment' });
+    const result = await assignments.deleteOne({
+      _id: new ObjectId(req.params.id), 
+      userId: new ObjectId(req.user._id) 
+    });
+    
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'Assignment not found' });
     }
+
+    res.status(200).json({ message: "Assignment deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while deleting the assignment' });
+  }
 }
 
 module.exports = {

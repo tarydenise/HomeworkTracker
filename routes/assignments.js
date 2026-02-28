@@ -4,11 +4,12 @@ const { handleValidationErrors } = require('../validation/handleValidationErrors
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/assignments');
+const requireAuth = require('../middleware/requireAuth');
 
-router.get('/', controller.getAllAssignments);
-router.get('/:id', controller.getAssignmentById);
-router.post('/', assignmentValidation, handleValidationErrors, controller.createAssignment);
-router.put('/:id', assignmentValidation, handleValidationErrors, controller.updateAssignment);
-router.delete('/:id', controller.deleteAssignment);
+router.get('/', requireAuth, controller.getAllAssignments);
+router.get('/:id', requireAuth, controller.getAssignmentById);
+router.post('/', requireAuth, assignmentValidation, handleValidationErrors, controller.createAssignment);
+router.put('/:id', requireAuth, assignmentValidation, handleValidationErrors, controller.updateAssignment);
+router.delete('/:id', requireAuth, controller.deleteAssignment);
 
 module.exports = router;
